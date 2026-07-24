@@ -1,0 +1,113 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-inter: "Inter", sans-serif;
+  --font-manrope: "Manrope", sans-serif;
+}
+
+* {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  background-color: #0b0b0b;
+  color: #ffffff;
+}
+
+body {
+  font-family: var(--font-manrope);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-inter);
+  letter-spacing: -0.02em;
+}
+
+/* Respect reduced-motion preferences across the whole app */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Thin, dark scrollbar to match the premium aesthetic */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0b0b0b;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3a3a;
+}
+
+/* Reusable glassmorphism surface */
+.glass {
+  background: rgba(22, 22, 22, 0.55);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Visible keyboard focus ring, brand-tinted */
+:focus-visible {
+  outline: 2px solid #d6a55c;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.text-gradient-gold {
+  background: linear-gradient(135deg, #d6a55c 0%, #5c3b21 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Styled range slider (Profit Calculator) */
+input[type="range"].brand-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #d6a55c 0%, #d6a55c var(--slider-progress, 50%), rgba(255, 255, 255, 0.08) var(--slider-progress, 50%));
+  outline: none;
+}
+input[type="range"].brand-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 3px solid #d6a55c;
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(214, 165, 92, 0.5);
+}
+input[type="range"].brand-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 3px solid #d6a55c;
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(214, 165, 92, 0.5);
+}
