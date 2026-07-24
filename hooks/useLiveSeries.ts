@@ -40,7 +40,7 @@ export function useLiveSeries(basePrice: number, seed: number, windowSize = 30, 
   useEffect(() => {
     const interval = setInterval(() => {
       setSeries((prev) => {
-        const last = prev[prev.length - 1];
+        const last = prev[prev.length - 1] ?? { time: "", value: basePrice };
         const nextValue = Number(
           (last.value + (Math.random() - 0.5) * (basePrice * 0.012)).toFixed(2)
         );
@@ -51,9 +51,9 @@ export function useLiveSeries(basePrice: number, seed: number, windowSize = 30, 
     return () => clearInterval(interval);
   }, [basePrice, intervalMs]);
 
-  const current = series[series.length - 1].value;
-  const first = series[0].value;
-  const changePct = ((current - first) / first) * 100;
+  const current = series[series.length - 1]?.value ?? basePrice;
+  const first = series[0]?.value ?? basePrice;
+  const changePct = first !== 0 ? ((current - first) / first) * 100 : 0;
 
   return { series, current, changePct };
 }

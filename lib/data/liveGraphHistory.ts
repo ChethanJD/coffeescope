@@ -43,13 +43,13 @@ export function getHistoricalSeries(timeframe: Timeframe): HistoryPoint[] {
 
   switch (timeframe) {
     case "yesterday":
-      return buildSeries(24, (i) => HOURS[i], arabicaBase, robustaBase, 3, 0.008);
+      return buildSeries(24, (i) => HOURS[i] ?? `${i}:00`, arabicaBase, robustaBase, 3, 0.008);
     case "7d":
-      return buildSeries(7, (i) => DAYS_OF_WEEK[i], arabicaBase, robustaBase, 7, 0.02);
+      return buildSeries(7, (i) => DAYS_OF_WEEK[i] ?? `Day ${i + 1}`, arabicaBase, robustaBase, 7, 0.02);
     case "1m":
       return buildSeries(30, (i) => `${i + 1}`, arabicaBase, robustaBase, 13, 0.018);
     case "1y":
-      return buildSeries(12, (i) => MONTHS[i], arabicaBase, robustaBase, 21, 0.05);
+      return buildSeries(12, (i) => MONTHS[i] ?? `Month ${i + 1}`, arabicaBase, robustaBase, 21, 0.05);
     case "3y":
       return buildSeries(3, (i) => `${CURRENT_YEAR - 2 + i}`, arabicaBase * 0.85, robustaBase * 0.85, 31, 0.16);
     case "5y":

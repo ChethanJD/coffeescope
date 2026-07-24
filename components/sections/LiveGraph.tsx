@@ -46,23 +46,27 @@ export function LiveGraph() {
     }));
   }, [isLive, liveArabica.series, liveRobusta.series, historicalData]);
 
-  const currentArabica = isLive
-    ? liveArabica.current
-    : historicalData[historicalData.length - 1]?.arabica ?? 0;
-  const currentRobusta = isLive
-    ? liveRobusta.current
-    : historicalData[historicalData.length - 1]?.robusta ?? 0;
+  const lastHistorical = historicalData[historicalData.length - 1];
+  const firstHistorical = historicalData[0];
 
-  const changeArabica = isLive
-    ? liveArabica.changePct
-    : ((historicalData[historicalData.length - 1]?.arabica - historicalData[0]?.arabica) /
-        historicalData[0]?.arabica) *
-      100;
-  const changeRobusta = isLive
-    ? liveRobusta.changePct
-    : ((historicalData[historicalData.length - 1]?.robusta - historicalData[0]?.robusta) /
-        historicalData[0]?.robusta) *
-      100;
+  const currentArabica = isLive ? liveArabica.current : lastHistorical?.arabica ?? 0;
+  const currentRobusta = isLive ? liveRobusta.current : lastHistorical?.robusta ?? 0;
+
+  const historicalArabicaChange =
+    firstHistorical && firstHistorical.arabica !== 0
+      ? (((lastHistorical?.arabica ?? firstHistorical.arabica) - firstHistorical.arabica) /
+          firstHistorical.arabica) *
+        100
+      : 0;
+  const historicalRobustaChange =
+    firstHistorical && firstHistorical.robusta !== 0
+      ? (((lastHistorical?.robusta ?? firstHistorical.robusta) - firstHistorical.robusta) /
+          firstHistorical.robusta) *
+        100
+      : 0;
+
+  const changeArabica = isLive ? liveArabica.changePct : historicalArabicaChange;
+  const changeRobusta = isLive ? liveRobusta.changePct : historicalRobustaChange;
 
   return (
     <section id="market" className="relative bg-surface-void px-6 py-24 sm:py-32">

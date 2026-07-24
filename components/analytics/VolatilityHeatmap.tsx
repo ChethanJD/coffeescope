@@ -35,14 +35,16 @@ export function VolatilityHeatmap() {
             </div>
           ))}
 
-          {HEATMAP_VARIETIES.map((variety, vIndex) => (
+          {HEATMAP_VARIETIES.map((variety, vIndex) => {
+            const row = VOLATILITY_HEATMAP[vIndex] ?? [];
+            return (
             <Fragment key={variety}>
               <div
                 className="flex items-center text-sm font-medium text-white/60"
               >
                 {variety}
               </div>
-              {VOLATILITY_HEATMAP[vIndex].map((value, mIndex) => (
+              {row.map((value, mIndex) => (
                 <motion.div
                   key={`${variety}-${mIndex}`}
                   initial={{ opacity: 0, scale: 0.7 }}
@@ -60,7 +62,8 @@ export function VolatilityHeatmap() {
                 </motion.div>
               ))}
             </Fragment>
-          ))}
+            );
+          })}
         </div>
 
         <div className="mt-5 flex items-center gap-2 text-xs text-white/40">

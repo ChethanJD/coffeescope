@@ -8,7 +8,7 @@ import { AIRecommendationCard } from "@/components/weather/AIRecommendationCard"
 import { WEATHER_LOCATIONS } from "@/lib/data/mockWeather";
 
 export function Weather() {
-  const [location, setLocation] = useState(WEATHER_LOCATIONS[0]);
+  const [location, setLocation] = useState(WEATHER_LOCATIONS[0]!);
 
   return (
     <section id="weather" className="relative bg-surface-void px-6 py-24 sm:py-32">

@@ -9,7 +9,7 @@ import { HOME_FORECAST_HORIZONS } from "@/lib/data/mockHomeForecast";
 import { cn } from "@/lib/utils";
 
 export function AIForecastGraph() {
-  const [activeId, setActiveId] = useState(HOME_FORECAST_HORIZONS[0].id);
+  const [activeId, setActiveId] = useState(HOME_FORECAST_HORIZONS[0]!.id);
   const horizon = HOME_FORECAST_HORIZONS.find((h) => h.id === activeId)!;
   const isPositive = horizon.changePct >= 0;
 

@@ -11,7 +11,7 @@ import { PREDICTION_HORIZONS } from "@/lib/data/mockPrediction";
 import { cn } from "@/lib/utils";
 
 export function AIPrediction() {
-  const [activeId, setActiveId] = useState(PREDICTION_HORIZONS[0].id);
+  const [activeId, setActiveId] = useState(PREDICTION_HORIZONS[0]!.id);
   const horizon = PREDICTION_HORIZONS.find((h) => h.id === activeId)!;
   const isPositive = horizon.changePct >= 0;
 

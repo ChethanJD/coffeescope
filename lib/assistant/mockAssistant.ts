@@ -20,8 +20,9 @@ export async function mockAssistantReply(userMessage: string): Promise<string> {
   }
 
   if (msg.includes("weather") || msg.includes("rain") || msg.includes("forecast")) {
-    const loc = WEATHER_LOCATIONS[0];
-    return `In ${loc.name}, ${loc.region}, it's currently ${loc.current.tempC}°C with ${loc.current.humidity}% humidity. Tomorrow's outlook: ${loc.forecast[0].condition.replace("-", " ")}, ${loc.forecast[0].rainChance}% rain chance. Search any region in the Weather section for a specific forecast.`;
+    const loc = WEATHER_LOCATIONS[0]!;
+    const tomorrowForecast = loc.forecast[0]!;
+    return `In ${loc.name}, ${loc.region}, it's currently ${loc.current.tempC}°C with ${loc.current.humidity}% humidity. Tomorrow's outlook: ${tomorrowForecast.condition.replace("-", " ")}, ${tomorrowForecast.rainChance}% rain chance. Search any region in the Weather section for a specific forecast.`;
   }
 
   if (msg.includes("predict") || msg.includes("price") || msg.includes("forecast")) {

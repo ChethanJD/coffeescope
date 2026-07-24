@@ -22,7 +22,7 @@ export async function mockAnalyzeImage(file: File): Promise<DiagnosisResult> {
   }
 
   const index = seed % DISEASE_DATABASE.length;
-  const disease = DISEASE_DATABASE[index];
+  const disease = DISEASE_DATABASE[index]!;
   const confidence = disease.id === "healthy" ? 92 + (seed % 6) : 78 + (seed % 18);
 
   return { disease, confidence };
