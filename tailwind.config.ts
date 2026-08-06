@@ -17,10 +17,9 @@ const config: Config = {
           leaf: "#3A7D44",  // Accent green
         },
         surface: {
-          void: "#FAF8F5",   // Background (warm off-white, not stark white)
-          card: "#FFFFFF",  // Cards
-          raised: "#F3EFE9",
-          ink: "#1A1512",   // Primary text color (warm near-black, pairs with coffee palette)
+          void: "#0B0B0B",   // Background
+          card: "#161616",  // Cards
+          raised: "#1E1E1E",
         },
       },
       fontFamily: {

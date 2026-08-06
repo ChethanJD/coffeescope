@@ -28,7 +28,7 @@ export function LocationSearch({
 
   return (
     <div className="relative mx-auto w-full max-w-md">
-      <div className="glass flex items-center gap-3 rounded-full bg-black/40 px-4 py-3">
+      <div className="glass flex items-center gap-3 rounded-full px-4 py-3">
         <Search className="h-4 w-4 shrink-0 text-white/40" />
         <input
           type="text"
@@ -61,7 +61,7 @@ export function LocationSearch({
                     onSelect(loc);
                     setQuery("");
                   }}
-                  className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-white/80 transition-colors hover:bg-black/5"
+                  className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-white/80 transition-colors hover:bg-white/5"
                 >
                   <MapPin className="h-3.5 w-3.5 text-coffee-gold" />
                   <span className="font-medium text-white">{loc.name}</span>

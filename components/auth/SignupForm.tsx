@@ -98,7 +98,7 @@ export function SignupForm() {
           type="checkbox"
           checked={values.agreeToTerms}
           onChange={(e) => setValues((v) => ({ ...v, agreeToTerms: e.target.checked }))}
-          className="mt-0.5 h-4 w-4 shrink-0 rounded border-white/20 bg-black/5 accent-coffee-gold"
+          className="mt-0.5 h-4 w-4 shrink-0 rounded border-white/20 bg-white/5 accent-coffee-gold"
         />
         <span>
           I agree to the{" "}
@@ -125,9 +125,9 @@ export function SignupForm() {
       </button>
 
       <div className="my-2 flex items-center gap-3 text-xs text-white/30">
-        <span className="h-px flex-1 bg-black/10" />
+        <span className="h-px flex-1 bg-white/10" />
         or continue with
-        <span className="h-px flex-1 bg-black/10" />
+        <span className="h-px flex-1 bg-white/10" />
       </div>
 
       <SocialAuthButtons />

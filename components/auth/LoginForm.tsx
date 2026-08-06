@@ -75,7 +75,7 @@ export function LoginForm() {
             type="checkbox"
             checked={values.remember}
             onChange={(e) => setValues((v) => ({ ...v, remember: e.target.checked }))}
-            className="h-4 w-4 rounded border-white/20 bg-black/5 accent-coffee-gold"
+            className="h-4 w-4 rounded border-white/20 bg-white/5 accent-coffee-gold"
           />
           Remember me
         </label>
@@ -96,9 +96,9 @@ export function LoginForm() {
       </button>
 
       <div className="my-2 flex items-center gap-3 text-xs text-white/30">
-        <span className="h-px flex-1 bg-black/10" />
+        <span className="h-px flex-1 bg-white/10" />
         or continue with
-        <span className="h-px flex-1 bg-black/10" />
+        <span className="h-px flex-1 bg-white/10" />
       </div>
 
       <SocialAuthButtons />

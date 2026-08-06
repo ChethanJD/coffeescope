@@ -20,7 +20,7 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
           ref={ref}
           id={fieldId}
           className={cn(
-            "w-full rounded-xl border bg-black/50 px-4 py-3 text-sm text-white placeholder:text-white/40 backdrop-blur-sm transition-colors focus:outline-none",
+            "w-full rounded-xl border bg-white/[0.03] px-4 py-3 text-sm text-white placeholder:text-white/25 transition-colors focus:outline-none",
             error
               ? "border-red-500/50 focus:border-red-500"
               : "border-white/10 focus:border-coffee-gold",

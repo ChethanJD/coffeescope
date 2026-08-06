@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { Inter, Manrope } from "next/font/google";
 import "./globals.css";
+import "leaflet/dist/leaflet.css";
 import { AssistantWidget } from "@/components/assistant/AssistantWidget";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { ScrollEffects } from "@/components/layout/ScrollEffects";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -36,7 +39,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${manrope.variable}`}>
       <body className="bg-surface-void font-body antialiased">
-        {children}
+        <ThemeProvider>
+          <ScrollEffects />
+          {children}
+        </ThemeProvider>
         <AssistantWidget />
       </body>
     </html>

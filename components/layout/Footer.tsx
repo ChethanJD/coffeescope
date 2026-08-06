@@ -65,7 +65,7 @@ function NewsletterForm() {
         onChange={(e) => setEmail(e.target.value)}
         placeholder="you@company.com"
         disabled={submitted}
-        className="w-full rounded-full border border-white/10 bg-black/50 px-4 py-2.5 text-sm text-white placeholder:text-white/40 backdrop-blur-sm focus:border-coffee-gold focus:outline-none disabled:opacity-60 sm:w-56"
+        className="w-full rounded-full border border-white/10 bg-white/[0.03] px-4 py-2.5 text-sm text-white placeholder:text-white/25 focus:border-coffee-gold focus:outline-none disabled:opacity-60 sm:w-56"
       />
       <button
         type="submit"

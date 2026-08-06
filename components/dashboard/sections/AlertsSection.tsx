@@ -14,7 +14,7 @@ function Toggle({ active, onToggle }: { active: boolean; onToggle: () => void })
       aria-pressed={active}
       className={cn(
         "relative h-6 w-11 shrink-0 rounded-full transition-colors",
-        active ? "bg-coffee-leaf" : "bg-black/10"
+        active ? "bg-coffee-leaf" : "bg-white/10"
       )}
     >
       <motion.span

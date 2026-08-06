@@ -1,12 +1,122 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, PlayCircle } from "lucide-react";
+import { ArrowRight, PlayCircle, TrendingDown, TrendingUp } from "lucide-react";
+
+/**
+ * Signature element: a single continuous line that reads simultaneously as
+ * a commodity price chart (the platform's core promise) and the split
+ * contour of a coffee bean (the platform's subject). It draws itself in
+ * on load, then idles with a slow ambient float — one orchestrated
+ * moment rather than scattered effects.
+ */
+function MarketPulseBean() {
+  return (
+    <svg
+      viewBox="0 0 900 500"
+      fill="none"
+      className="pointer-events-none absolute inset-0 h-full w-full opacity-40"
+      preserveAspectRatio="xMidYMid slice"
+    >
+      <defs>
+        <linearGradient id="pulseStroke" x1="0" y1="0" x2="900" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#5C3B21" stopOpacity="0" />
+          <stop offset="20%" stopColor="#D6A55C" />
+          <stop offset="55%" stopColor="#3A7D44" />
+          <stop offset="100%" stopColor="#D6A55C" stopOpacity="0" />
+        </linearGradient>
+        <radialGradient id="beanGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#D6A55C" stopOpacity="0.25" />
+          <stop offset="100%" stopColor="#D6A55C" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+
+      <circle cx="450" cy="250" r="240" fill="url(#beanGlow)" />
+
+      {/* The bean's center crease, drawn like a price chart */}
+      <motion.path
+        d="M60,300 C160,300 180,180 260,210 C320,232 300,290 360,260 C420,230 400,150 470,160 C540,170 520,260 590,240 C650,224 630,140 700,150 C760,158 780,230 840,210"
+        stroke="url(#pulseStroke)"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={{ pathLength: 1, opacity: 1 }}
+        transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+      />
+
+      {/* Faint upper/lower bean-husk arcs for context, fade in after the line lands */}
+      <motion.path
+        d="M60,300 C220,120 620,110 840,210"
+        stroke="#D6A55C"
+        strokeOpacity="0.12"
+        strokeWidth="1.5"
+        fill="none"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.5, delay: 1.6 }}
+      />
+      <motion.path
+        d="M60,300 C220,420 620,430 840,210"
+        stroke="#5C3B21"
+        strokeOpacity="0.18"
+        strokeWidth="1.5"
+        fill="none"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.5, delay: 1.7 }}
+      />
+    </svg>
+  );
+}
+
+const BEAN_POSITIONS = [
+  { top: "18%", left: "8%", size: 22, delay: 0, duration: 7 },
+  { top: "62%", left: "12%", size: 14, delay: 1.2, duration: 8 },
+  { top: "28%", left: "88%", size: 18, delay: 0.6, duration: 6.5 },
+  { top: "70%", left: "82%", size: 26, delay: 1.8, duration: 7.5 },
+  { top: "12%", left: "48%", size: 12, delay: 0.9, duration: 6 },
+];
+
+function FloatingBeans() {
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      {BEAN_POSITIONS.map((bean, i) => (
+        <motion.div
+          key={i}
+          className="absolute rounded-[45%] bg-coffee-bean/70 shadow-lg"
+          style={{
+            top: bean.top,
+            left: bean.left,
+            width: bean.size,
+            height: bean.size * 1.3,
+          }}
+          animate={{ y: [0, -18, 0], rotate: [0, 8, 0] }}
+          transition={{
+            duration: bean.duration,
+            delay: bean.delay,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        >
+          <div className="absolute inset-y-1 left-1/2 w-px -translate-x-1/2 rounded-full bg-black/40" />
+        </motion.div>
+      ))}
+    </div>
+  );
+}
 
 export function Hero() {
   return (
     <section className="relative flex min-h-[100svh] items-center overflow-hidden bg-surface-void">
-      <div className="relative mx-auto flex max-w-5xl flex-col items-center px-6 pt-32 text-center sm:pt-24">
+      {/* Ambient gradient field */}
+      <div className="absolute inset-0 bg-coffee-radial" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-surface-void" />
+
+      <MarketPulseBean />
+      <FloatingBeans />
+
+      <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-6 pb-20 pt-32 lg:grid-cols-[1.1fr_0.9fr] lg:pt-24">
+        <div className="text-center lg:text-left">
         <motion.span
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -31,7 +141,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.25 }}
-          className="mt-6 max-w-xl text-balance font-body text-lg text-white/60 sm:text-xl"
+          className="mt-6 max-w-xl text-balance font-body text-lg text-white/60 sm:text-xl lg:mx-0"
         >
           AI-powered coffee market intelligence — real-time prices, weather
           signals, and predictive analytics for farmers, exporters, traders,
@@ -42,7 +152,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.4 }}
-          className="mt-10 flex flex-col items-center gap-4 sm:flex-row"
+          className="mt-10 flex flex-col items-center gap-4 sm:flex-row lg:justify-start"
         >
           <a
             href="#market"
@@ -59,6 +169,33 @@ export function Hero() {
             Watch Demo
           </a>
         </motion.div>
+        </div>
+
+        <motion.aside
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7, delay: 0.35 }}
+          className="glass mx-auto w-full max-w-md rounded-xl3 p-5 shadow-card lg:mx-0"
+          aria-label="Live market ticker"
+        >
+          <div className="flex items-center justify-between border-b border-white/10 pb-4">
+            <span className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-white/60"><span className="h-2 w-2 animate-pulse rounded-full bg-coffee-leaf" /> Live ticker</span>
+            <span className="text-xs text-white/35">Updated now</span>
+          </div>
+          <div className="divide-y divide-white/[0.08]">
+            {[
+              { name: "Arabica", price: "₹58,040", change: "+1.82%", up: true },
+              { name: "Robusta", price: "₹31,275", change: "−0.94%", up: false },
+              { name: "ICE C", price: "¢318.20", change: "+0.61%", up: true },
+            ].map((quote) => (
+              <div key={quote.name} className="flex items-center justify-between py-4">
+                <div><p className="font-heading font-semibold text-white">{quote.name}</p><p className="mt-0.5 text-xs text-white/40">Benchmark spot</p></div>
+                <div className="text-right"><p className="font-heading text-lg font-semibold text-white">{quote.price}</p><p className={`mt-0.5 flex items-center justify-end gap-1 text-xs font-semibold ${quote.up ? "text-coffee-leaf" : "text-red-400"}`}>{quote.up ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}{quote.change}</p></div>
+              </div>
+            ))}
+          </div>
+          <a href="#market" className="mt-3 flex items-center justify-between rounded-xl bg-white/[0.05] px-4 py-3 text-sm font-semibold text-white/80 transition-colors hover:bg-white/[0.09] hover:text-white">Open market dashboard <ArrowRight className="h-4 w-4" /></a>
+        </motion.aside>
       </div>
 
       {/* Scroll cue */}
