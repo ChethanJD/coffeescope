@@ -28,7 +28,7 @@ export function ListingCard({ listing, index }: { listing: MarketplaceListing; i
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-        <span className="absolute left-3 top-3 rounded-full bg-black/50 px-2.5 py-1 text-[11px] font-medium text-white/80 backdrop-blur-sm">
+        <span className="absolute left-3 top-3 rounded-full bg-black/50 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-sm">
           {listing.variety}
         </span>
         <span className="absolute bottom-3 left-3 font-heading text-lg font-semibold text-white">

@@ -19,7 +19,7 @@ export function ConfidenceGauge({ confidence }: { confidence: number }) {
           r={radius}
           fill="none"
           stroke="white"
-          strokeOpacity="0.08"
+          strokeOpacity="0.15"
           strokeWidth="10"
         />
         <motion.circle

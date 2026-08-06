@@ -13,7 +13,7 @@ export function TypingIndicator() {
         {[0, 1, 2].map((i) => (
           <motion.span
             key={i}
-            className="h-1.5 w-1.5 rounded-full bg-white/40"
+            className="h-1.5 w-1.5 rounded-full bg-black/40"
             animate={{ y: [0, -4, 0] }}
             transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.15 }}
           />

@@ -107,7 +107,7 @@ export function ChatWindow({ onClose }: { onClose: () => void }) {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Ask about market, weather, or disease..."
-          className="flex-1 rounded-full bg-white/[0.04] px-4 py-2.5 text-sm text-white placeholder:text-white/25 focus:outline-none"
+          className="flex-1 rounded-full bg-black/40 px-4 py-2.5 text-sm text-white placeholder:text-white/40 focus:outline-none"
         />
         <button
           type="submit"

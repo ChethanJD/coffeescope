@@ -13,8 +13,8 @@
 
 html,
 body {
-  background-color: #0b0b0b;
-  color: #ffffff;
+  background-color: #faf8f5;
+  color: #1a1512;
 }
 
 body {
@@ -45,27 +45,40 @@ h6 {
   }
 }
 
-/* Thin, dark scrollbar to match the premium aesthetic */
+/* Thin, light scrollbar to match the light theme */
 ::-webkit-scrollbar {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #0b0b0b;
+  background: #faf8f5;
 }
 ::-webkit-scrollbar-thumb {
-  background: #2a2a2a;
+  background: #d8d2c8;
   border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3a3a3a;
+  background: #c4bcae;
 }
 
-/* Reusable glassmorphism surface */
+/* Reusable glassmorphism surface (light variant) */
 .glass {
-  background: rgba(22, 22, 22, 0.55);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid rgba(26, 21, 18, 0.1);
+}
+
+/*
+ * Dark halo/outline behind text so now-white/light text stays legible
+ * over bright video frames too — the classic subtitle/caption technique:
+ * white text + a dark outline reads on virtually any background,
+ * without adding any opaque overlay on top of the video itself.
+ */
+body {
+  text-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.85),
+    0 0 8px rgba(0, 0, 0, 0.6),
+    0 0 16px rgba(0, 0, 0, 0.4);
 }
 
 /* Visible keyboard focus ring, brand-tinted */
@@ -82,13 +95,22 @@ h6 {
   color: transparent;
 }
 
+/*
+ * bg-surface-void is intentionally fully transparent so the fixed
+ * ScrollBackgroundSequence video canvas shows through every section
+ * with no tint or blur on top of it.
+ */
+.bg-surface-void {
+  background-color: transparent;
+}
+
 /* Styled range slider (Profit Calculator) */
 input[type="range"].brand-slider {
   -webkit-appearance: none;
   appearance: none;
   height: 6px;
   border-radius: 999px;
-  background: linear-gradient(90deg, #d6a55c 0%, #d6a55c var(--slider-progress, 50%), rgba(255, 255, 255, 0.08) var(--slider-progress, 50%));
+  background: linear-gradient(90deg, #d6a55c 0%, #d6a55c var(--slider-progress, 50%), rgba(26, 21, 18, 0.12) var(--slider-progress, 50%));
   outline: none;
 }
 input[type="range"].brand-slider::-webkit-slider-thumb {
