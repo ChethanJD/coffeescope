@@ -54,6 +54,9 @@ export function ScrollBackgroundSequence({
     let scrollTrigger: ScrollTrigger | null = null;
 
     function drawFrame(index: number) {
+      // `ctx` is captured by this callback, so narrow it locally for TypeScript.
+      const context = ctx;
+      if (!context) return;
       const i = Math.max(0, Math.min(frameCount - 1, Math.round(index)));
       const img = imagesRef.current[i];
       if (!img || !img.complete || !img.naturalWidth) return;
@@ -77,8 +80,8 @@ export function ScrollBackgroundSequence({
         sx = 0;
         sy = (ih - sh) / 2;
       }
-      ctx.clearRect(0, 0, cw, ch);
-      ctx.drawImage(img, sx, sy, sw, sh, 0, 0, cw, ch);
+      context.clearRect(0, 0, cw, ch);
+      context.drawImage(img, sx, sy, sw, sh, 0, 0, cw, ch);
     }
 
     function resizeCanvas() {
