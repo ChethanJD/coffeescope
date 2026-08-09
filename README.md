@@ -1,5 +1,9 @@
 # ☕ CoffeeScope
 
+![CI](https://github.com/ChethanJD/coffeescope/actions/workflows/ci.yml/badge.svg)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js)
+
 **CoffeeScope** is a coffee market intelligence platform built with Next.js. It brings together live market data, AI-powered price predictions, crop disease detection, weather insights, and a grower marketplace into a single dashboard for coffee farmers, traders, and analysts.
 
 ## Features
@@ -83,7 +87,7 @@ This project is set up to deploy easily on [Vercel](https://vercel.com/):
 
 ## Contributing
 
-Contributions are welcome! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
+Contributions are welcome! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines and our [Code of Conduct](./CODE_OF_CONDUCT.md).
 
 ## License
 
