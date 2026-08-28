@@ -19,10 +19,12 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://coffeescope.ai"),
   title: "CoffeeScope — Know the Market Before the Market Knows It",
   description:
     "AI-powered coffee market intelligence: real-time prices, weather intelligence, disease detection, and predictive analytics for farmers, exporters, traders, and buyers.",
-  metadataBase: new URL("https://coffeescope.ai"),
+  keywords: ["coffee prices", "coffee market", "coffee analytics", "Arabica", "Robusta", "coffee forecasting"],
+  robots: { index: true, follow: true },
   openGraph: {
     title: "CoffeeScope",
     description:
@@ -39,6 +41,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${manrope.variable}`}>
       <body className="bg-surface-void font-body antialiased">
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-coffee-gradient focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white">Skip to main content</a>
         <ThemeProvider>
           <ScrollEffects />
           {children}

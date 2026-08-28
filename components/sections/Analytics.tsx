@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { TrendingUp, BarChart3, PieChart as PieIcon, Grid3x3 } from "lucide-react";
+import { TrendingUp, BarChart3, PieChart as PieIcon, Grid3x3, Activity, Database, ShieldCheck } from "lucide-react";
 import { PriceTrendChart } from "@/components/analytics/PriceTrendChart";
 import { OriginVolumeChart } from "@/components/analytics/OriginVolumeChart";
 import { MarketShareChart } from "@/components/analytics/MarketShareChart";
@@ -23,19 +23,32 @@ export function Analytics() {
   const activeTab = TABS.find((t) => t.id === active)!;
 
   return (
-    <section id="analytics" className="relative bg-surface-void px-6 py-24 sm:py-32">
+    <section id="analytics" className="relative overflow-hidden bg-surface-void px-4 py-20 sm:px-6 sm:py-28">
+      <div className="pointer-events-none absolute right-10 top-20 h-72 w-72 rounded-full bg-coffee-gold/[0.05] blur-3xl" />
       <div className="mx-auto max-w-6xl">
-        <div className="mx-auto max-w-2xl text-center">
+        <div className="relative mx-auto max-w-3xl text-center">
           <span className="text-xs font-semibold uppercase tracking-widest text-coffee-gold">
             Market Analytics
           </span>
           <h2 className="mt-3 font-heading text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-            Every angle on the market, one dashboard
+            Market intelligence, built for decisions
           </h2>
           <p className="mt-4 text-white/50">
-            Switch between trend, volume, share, and volatility views built
-            on the same underlying market data.
+            Track price movement, supply signals, market share, and volatility from a single analytics workspace.
           </p>
+        </div>
+
+        <div className="relative mt-10 grid gap-3 sm:grid-cols-3">
+          {[
+            { label: "Market signal", value: "Active", icon: Activity },
+            { label: "Data coverage", value: "30 days", icon: Database },
+            { label: "Model status", value: "Ready", icon: ShieldCheck },
+          ].map(({ label, value, icon: Icon }) => (
+            <div key={label} className="glass-subtle rounded-2xl px-4 py-3">
+              <div className="flex items-center justify-between text-xs text-white/40"><span>{label}</span><Icon className="h-3.5 w-3.5 text-coffee-gold" /></div>
+              <p className="mt-1 font-heading text-lg font-semibold text-white">{value}</p>
+            </div>
+          ))}
         </div>
 
         {/* Tab switcher */}
@@ -68,7 +81,7 @@ export function Analytics() {
         </div>
 
         {/* Chart card */}
-        <div className="glass mt-8 rounded-xl3 p-6 shadow-card sm:p-8">
+        <div className="glass relative mt-6 rounded-2xl p-4 shadow-card sm:p-6 lg:p-7">
           <div className="mb-6 flex items-baseline justify-between">
             <h3 className="font-heading text-lg font-semibold text-white">
               {activeTab.label}

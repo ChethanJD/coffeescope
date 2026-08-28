@@ -13,57 +13,42 @@ export function AuthLayout({
   subtitle: string;
 }) {
   return (
-    <main className="grid min-h-screen grid-cols-1 bg-surface-void lg:grid-cols-2">
-      {/* Form panel */}
-      <div className="flex flex-col justify-center px-6 py-12 sm:px-12 lg:px-20">
-        <Link href="/" className="mb-10 flex items-center gap-2 font-heading text-lg font-semibold text-white">
+    <main className="relative grid min-h-screen grid-cols-1 overflow-hidden bg-surface-void lg:grid-cols-2">
+      <div className="pointer-events-none absolute -left-32 top-20 h-72 w-72 rounded-full bg-coffee-gold/10 blur-3xl" />
+      <div className="pointer-events-none absolute right-0 top-0 h-96 w-96 rounded-full bg-coffee-gold/[0.06] blur-3xl" />
+
+      <div className="relative flex flex-col justify-center px-6 py-12 sm:px-12 lg:px-20">
+        <Link
+          href="/"
+          className="mb-10 flex w-fit items-center gap-2 font-heading text-lg font-semibold text-white transition-opacity hover:opacity-80"
+        >
           <span className="flex h-8 w-8 items-center justify-center rounded-full bg-coffee-gradient shadow-glow-gold">
             <Coffee className="h-4 w-4 text-white" strokeWidth={2.5} />
           </span>
           CoffeeScope
         </Link>
 
-        <div className="mx-auto w-full max-w-sm">
-          <span className="text-xs font-semibold uppercase tracking-widest text-coffee-gold">
+        <div className="glass relative mx-auto w-full max-w-sm rounded-2xl p-6 sm:p-8">
+          <span className="text-xs font-semibold uppercase tracking-[0.18em] text-coffee-gold">
             {eyebrow}
           </span>
           <h1 className="mt-2 font-heading text-3xl font-semibold tracking-tight text-white">
             {title}
           </h1>
-          <p className="mt-2 text-sm text-white/50">{subtitle}</p>
-
+          <p className="mt-2 text-sm leading-6 text-white/50">{subtitle}</p>
           <div className="mt-8">{children}</div>
         </div>
       </div>
 
-      {/* Brand panel */}
-      <div className="relative hidden overflow-hidden bg-surface-card lg:block">
-        <div className="absolute inset-0 bg-coffee-radial" />
-        <svg
-          viewBox="0 0 600 900"
-          className="absolute inset-0 h-full w-full opacity-30"
-          preserveAspectRatio="xMidYMid slice"
-        >
-          <defs>
-            <linearGradient id="auth-pulse" x1="0" y1="0" x2="600" y2="0" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#D6A55C" stopOpacity="0" />
-              <stop offset="50%" stopColor="#D6A55C" />
-              <stop offset="100%" stopColor="#3A7D44" stopOpacity="0" />
-            </linearGradient>
-          </defs>
-          <path
-            d="M40,700 C140,650 160,500 240,520 C300,535 280,600 340,580 C410,555 390,420 460,430 C520,438 540,600 560,620"
-            stroke="url(#auth-pulse)"
-            strokeWidth="2.5"
-            fill="none"
-          />
-        </svg>
+      <div className="relative hidden overflow-hidden border-l border-white/[0.06] bg-surface-card lg:block">
+        <div className="absolute inset-0 bg-coffee-radial opacity-80" />
+        <div className="absolute right-12 top-20 h-40 w-40 rounded-full border border-white/[0.08] bg-white/[0.025] backdrop-blur-xl" />
+        <div className="absolute bottom-24 left-16 h-56 w-56 rounded-full bg-coffee-gold/[0.07] blur-3xl" />
 
         <div className="relative flex h-full flex-col justify-end p-14">
-          <blockquote className="max-w-md">
+          <blockquote className="glass-subtle max-w-md rounded-2xl p-7">
             <p className="font-heading text-2xl font-medium leading-snug text-white">
-              "CoffeeScope caught the frost risk in Minas Gerais three days
-              before our usual sources did."
+              "CoffeeScope caught the frost risk in Minas Gerais three days before our usual sources did."
             </p>
             <footer className="mt-4 text-sm text-white/50">
               — Head of Procurement, specialty coffee importer

@@ -8,7 +8,7 @@ import { MarketStatusBar } from "@/components/sections/MarketStatusBar";
 
 export default function HomePage() {
   return (
-    <main className="relative">
+    <main id="main-content" className="relative">
       <Navbar />
       <Hero />
       <MarketStatusBar />

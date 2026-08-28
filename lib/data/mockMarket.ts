@@ -7,18 +7,24 @@ import type { MarketQuote } from "@/types";
 function generateSparkline(seed: number, points = 24): number[] {
   let value = 100;
   const series: number[] = [];
+
   for (let i = 0; i < points; i++) {
     const pseudoRandom = Math.sin(seed * (i + 1)) * 2.5;
     value = Math.max(60, value + pseudoRandom);
     series.push(Number(value.toFixed(2)));
   }
+
   return series;
 }
 
 /**
- * Live market quotes. In production this is replaced by a React Query
- * hook polling GET /api/market/live (FastAPI -> TimescaleDB), but every
- * consuming component only depends on the MarketQuote shape below.
+ * CoffeeScope market quotes.
+ *
+ * Canonical price unit:
+ *   INR per kilogram (₹/kg)
+ *
+ * Quintal display is derived from the same value:
+ *   ₹/quintal = ₹/kg × 100
  */
 export const MOCK_QUOTES: MarketQuote[] = [
   {
@@ -26,7 +32,7 @@ export const MOCK_QUOTES: MarketQuote[] = [
     price: 580.4,
     changeDaily: 1.82,
     changeWeekly: -0.64,
-    currency: "INR/kg ₹",
+    currency: "INR",
     sparkline: generateSparkline(0.35),
   },
   {
@@ -34,7 +40,7 @@ export const MOCK_QUOTES: MarketQuote[] = [
     price: 312.75,
     changeDaily: -0.94,
     changeWeekly: 2.31,
-    currency: "INR/kg ₹",
+    currency: "INR",
     sparkline: generateSparkline(0.58),
   },
 ];

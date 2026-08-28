@@ -37,23 +37,23 @@ export function DashboardShell() {
   const unreadCount = NOTIFICATIONS.filter((n) => !n.read).length;
 
   return (
-    <div className="min-h-screen bg-surface-void px-6 pb-24 pt-8">
+    <div className="min-h-screen bg-surface-void px-3 pb-16 pt-5 sm:px-5 sm:pb-20 sm:pt-7 lg:px-6 lg:pb-24 lg:pt-8">
       <div className="mx-auto max-w-7xl">
         {/* Topbar */}
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-5 flex items-center justify-between gap-3 sm:mb-8">
           <div>
             <p className="text-xs text-white/40">Dashboard</p>
-            <h1 className="font-heading text-2xl font-semibold text-white">
+            <h1 className="font-heading text-xl font-semibold text-white sm:text-2xl">
               Welcome back, {DASHBOARD_USER.name.split(" ")[0]}
             </h1>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <div className="glass hidden items-center gap-2 rounded-full px-4 py-2.5 sm:flex">
               <Search className="h-4 w-4 text-white/40" />
               <input
                 type="text"
                 placeholder="Search..."
-                className="w-40 bg-transparent text-sm text-white placeholder:text-white/30 focus:outline-none"
+                className="w-28 bg-transparent sm:w-40 text-sm text-white placeholder:text-white/30 focus:outline-none"
               />
             </div>
             <button

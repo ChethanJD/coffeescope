@@ -1,213 +1,197 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, PlayCircle, TrendingDown, TrendingUp } from "lucide-react";
+import {
+  ArrowRight,
+  BarChart3,
+  ChevronRight,
+  PlayCircle,
+  TrendingDown,
+  TrendingUp,
+} from "lucide-react";
 
-/**
- * Signature element: a single continuous line that reads simultaneously as
- * a commodity price chart (the platform's core promise) and the split
- * contour of a coffee bean (the platform's subject). It draws itself in
- * on load, then idles with a slow ambient float — one orchestrated
- * moment rather than scattered effects.
- */
-function MarketPulseBean() {
+function MarketPulse() {
   return (
     <svg
-      viewBox="0 0 900 500"
+      viewBox="0 0 900 320"
       fill="none"
-      className="pointer-events-none absolute inset-0 h-full w-full opacity-40"
-      preserveAspectRatio="xMidYMid slice"
+      className="pointer-events-none absolute inset-x-0 bottom-0 h-[58%] w-full opacity-35"
+      preserveAspectRatio="none"
+      aria-hidden="true"
     >
       <defs>
-        <linearGradient id="pulseStroke" x1="0" y1="0" x2="900" y2="0" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#5C3B21" stopOpacity="0" />
-          <stop offset="20%" stopColor="#D6A55C" />
-          <stop offset="55%" stopColor="#3A7D44" />
-          <stop offset="100%" stopColor="#D6A55C" stopOpacity="0" />
+        <linearGradient id="heroPulse" x1="0" y1="0" x2="900" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#C98A45" stopOpacity="0" />
+          <stop offset="0.22" stopColor="#E0A85C" stopOpacity="0.55" />
+          <stop offset="0.58" stopColor="#E0A85C" stopOpacity="0.9" />
+          <stop offset="1" stopColor="#C98A45" stopOpacity="0" />
         </linearGradient>
-        <radialGradient id="beanGlow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#D6A55C" stopOpacity="0.25" />
-          <stop offset="100%" stopColor="#D6A55C" stopOpacity="0" />
-        </radialGradient>
+        <linearGradient id="heroArea" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#E0A85C" stopOpacity="0.10" />
+          <stop offset="1" stopColor="#E0A85C" stopOpacity="0" />
+        </linearGradient>
       </defs>
-
-      <circle cx="450" cy="250" r="240" fill="url(#beanGlow)" />
-
-      {/* The bean's center crease, drawn like a price chart */}
+      <path
+        d="M0 246 C92 236 108 210 176 218 C246 226 274 164 338 180 C410 198 420 112 488 136 C550 158 568 192 626 154 C692 112 730 142 790 98 C832 68 860 78 900 54 L900 320 L0 320 Z"
+        fill="url(#heroArea)"
+      />
       <motion.path
-        d="M60,300 C160,300 180,180 260,210 C320,232 300,290 360,260 C420,230 400,150 470,160 C540,170 520,260 590,240 C650,224 630,140 700,150 C760,158 780,230 840,210"
-        stroke="url(#pulseStroke)"
+        d="M0 246 C92 236 108 210 176 218 C246 226 274 164 338 180 C410 198 420 112 488 136 C550 158 568 192 626 154 C692 112 730 142 790 98 C832 68 860 78 900 54"
+        stroke="url(#heroPulse)"
         strokeWidth="2.5"
         strokeLinecap="round"
         initial={{ pathLength: 0, opacity: 0 }}
         animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-      />
-
-      {/* Faint upper/lower bean-husk arcs for context, fade in after the line lands */}
-      <motion.path
-        d="M60,300 C220,120 620,110 840,210"
-        stroke="#D6A55C"
-        strokeOpacity="0.12"
-        strokeWidth="1.5"
-        fill="none"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.5, delay: 1.6 }}
-      />
-      <motion.path
-        d="M60,300 C220,420 620,430 840,210"
-        stroke="#5C3B21"
-        strokeOpacity="0.18"
-        strokeWidth="1.5"
-        fill="none"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.5, delay: 1.7 }}
+        transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
       />
     </svg>
   );
 }
 
-const BEAN_POSITIONS = [
-  { top: "18%", left: "8%", size: 22, delay: 0, duration: 7 },
-  { top: "62%", left: "12%", size: 14, delay: 1.2, duration: 8 },
-  { top: "28%", left: "88%", size: 18, delay: 0.6, duration: 6.5 },
-  { top: "70%", left: "82%", size: 26, delay: 1.8, duration: 7.5 },
-  { top: "12%", left: "48%", size: 12, delay: 0.9, duration: 6 },
+const quotes = [
+  { name: "Arabica", price: "₹58,040", change: "+1.82%", up: true },
+  { name: "Robusta", price: "₹31,275", change: "−0.94%", up: false },
+  { name: "ICE C", price: "¢318.20", change: "+0.61%", up: true },
 ];
-
-function FloatingBeans() {
-  return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      {BEAN_POSITIONS.map((bean, i) => (
-        <motion.div
-          key={i}
-          className="absolute rounded-[45%] bg-coffee-bean/70 shadow-lg"
-          style={{
-            top: bean.top,
-            left: bean.left,
-            width: bean.size,
-            height: bean.size * 1.3,
-          }}
-          animate={{ y: [0, -18, 0], rotate: [0, 8, 0] }}
-          transition={{
-            duration: bean.duration,
-            delay: bean.delay,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        >
-          <div className="absolute inset-y-1 left-1/2 w-px -translate-x-1/2 rounded-full bg-black/40" />
-        </motion.div>
-      ))}
-    </div>
-  );
-}
 
 export function Hero() {
   return (
-    <section className="relative flex min-h-[100svh] items-center overflow-hidden bg-surface-void">
-      {/* Ambient gradient field */}
-      <div className="absolute inset-0 bg-coffee-radial" />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-surface-void" />
+    <section className="relative isolate overflow-hidden bg-surface-void pt-24 sm:pt-28 lg:pt-20">
+      <div className="absolute inset-0 -z-20 bg-coffee-radial" />
+      <div className="absolute left-[8%] top-16 -z-10 h-64 w-64 rounded-full bg-coffee-gold/10 blur-3xl" />
+      <div className="absolute right-[4%] top-32 -z-10 h-80 w-80 rounded-full bg-coffee-amber/10 blur-3xl" />
+      <div className="absolute inset-x-0 bottom-0 -z-10 h-48 bg-gradient-to-t from-surface-void to-transparent" />
 
-      <MarketPulseBean />
-      <FloatingBeans />
-
-      <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-6 pb-20 pt-32 lg:grid-cols-[1.1fr_0.9fr] lg:pt-24">
-        <div className="text-center lg:text-left">
-        <motion.span
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="glass mb-8 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-coffee-gold"
-        >
-          Live · 47 origins tracked in real time
-        </motion.span>
-
-        <motion.h1
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="font-heading text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-6xl lg:text-7xl"
-        >
-          Know the market
-          <br />
-          <span className="text-gradient-gold">before the market knows it.</span>
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.25 }}
-          className="mt-6 max-w-xl text-balance font-body text-lg text-white/60 sm:text-xl lg:mx-0"
-        >
-          AI-powered coffee market intelligence — real-time prices, weather
-          signals, and predictive analytics for farmers, exporters, traders,
-          and buyers.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.4 }}
-          className="mt-10 flex flex-col items-center gap-4 sm:flex-row lg:justify-start"
-        >
-          <a
-            href="#market"
-            className="group inline-flex items-center gap-2 rounded-full bg-coffee-gradient px-7 py-3.5 text-sm font-semibold text-white shadow-glow-gold transition-transform hover:scale-[1.03] active:scale-[0.98]"
+      <div className="mx-auto grid min-h-[calc(100svh-5rem)] max-w-7xl items-center gap-12 px-5 pb-16 pt-12 sm:px-8 lg:grid-cols-[1.08fr_0.92fr] lg:gap-16 lg:px-10 lg:pb-20 lg:pt-8">
+        <div className="relative z-10 text-center lg:text-left">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55 }}
+            className="mb-6 inline-flex items-center gap-2 rounded-full border border-coffee-gold/20 bg-white/[0.045] px-3.5 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-coffee-gold backdrop-blur-xl"
           >
-            Explore Market
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-          </a>
-          <a
-            href="#demo"
-            className="glass inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold text-white/90 transition-colors hover:text-white"
-          >
-            <PlayCircle className="h-4 w-4" />
-            Watch Demo
-          </a>
-        </motion.div>
-        </div>
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-coffee-leaf" />
+            Market intelligence · 47 origins tracked
+          </motion.div>
 
-        <motion.aside
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7, delay: 0.35 }}
-          className="glass mx-auto w-full max-w-md rounded-xl3 p-5 shadow-card lg:mx-0"
-          aria-label="Live market ticker"
-        >
-          <div className="flex items-center justify-between border-b border-white/10 pb-4">
-            <span className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-white/60"><span className="h-2 w-2 animate-pulse rounded-full bg-coffee-leaf" /> Live ticker</span>
-            <span className="text-xs text-white/35">Updated now</span>
-          </div>
-          <div className="divide-y divide-white/[0.08]">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, delay: 0.08 }}
+            className="mx-auto max-w-4xl font-heading text-4xl font-semibold leading-[1.02] tracking-[-0.045em] text-white sm:text-6xl lg:mx-0 lg:text-[4.65rem]"
+          >
+            Coffee market intelligence,
+            <span className="block text-gradient-gold">built for decisions.</span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, delay: 0.2 }}
+            className="mx-auto mt-6 max-w-2xl text-balance text-base leading-7 text-white/60 sm:text-lg lg:mx-0"
+          >
+            Track global coffee prices, market movements, weather signals, and AI-assisted forecasts in one focused workspace.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, delay: 0.32 }}
+            className="mt-8 flex flex-col items-center gap-3 sm:flex-row lg:justify-start"
+          >
+            <a
+              href="#market"
+              className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-coffee-gradient px-6 text-sm font-semibold text-white shadow-glow-gold transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0"
+            >
+              Explore market
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            </a>
+            <a
+              href="#demo"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.045] px-6 text-sm font-semibold text-white/85 backdrop-blur-xl transition-all duration-200 hover:border-white/20 hover:bg-white/[0.08] hover:text-white"
+            >
+              <PlayCircle className="h-4 w-4" />
+              Watch demo
+            </a>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.44 }}
+            className="mx-auto mt-9 grid max-w-xl grid-cols-3 divide-x divide-white/10 rounded-2xl border border-white/10 bg-white/[0.035] px-2 py-3 text-left backdrop-blur-xl lg:mx-0"
+          >
             {[
-              { name: "Arabica", price: "₹58,040", change: "+1.82%", up: true },
-              { name: "Robusta", price: "₹31,275", change: "−0.94%", up: false },
-              { name: "ICE C", price: "¢318.20", change: "+0.61%", up: true },
-            ].map((quote) => (
-              <div key={quote.name} className="flex items-center justify-between py-4">
-                <div><p className="font-heading font-semibold text-white">{quote.name}</p><p className="mt-0.5 text-xs text-white/40">Benchmark spot</p></div>
-                <div className="text-right"><p className="font-heading text-lg font-semibold text-white">{quote.price}</p><p className={`mt-0.5 flex items-center justify-end gap-1 text-xs font-semibold ${quote.up ? "text-coffee-leaf" : "text-red-400"}`}>{quote.up ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}{quote.change}</p></div>
+              ["47", "Origins tracked"],
+              ["24/7", "Market monitoring"],
+              ["AI", "Forecast signals"],
+            ].map(([value, label]) => (
+              <div key={label} className="px-3 sm:px-5">
+                <p className="font-heading text-lg font-semibold text-white sm:text-xl">{value}</p>
+                <p className="mt-0.5 text-[10px] uppercase tracking-wider text-white/35 sm:text-[11px]">{label}</p>
               </div>
             ))}
-          </div>
-          <a href="#market" className="mt-3 flex items-center justify-between rounded-xl bg-white/[0.05] px-4 py-3 text-sm font-semibold text-white/80 transition-colors hover:bg-white/[0.09] hover:text-white">Open market dashboard <ArrowRight className="h-4 w-4" /></a>
-        </motion.aside>
-      </div>
-
-      {/* Scroll cue */}
-      <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-        animate={{ y: [0, 8, 0] }}
-        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <div className="h-9 w-5.5 rounded-full border border-white/20 p-1">
-          <div className="h-1.5 w-1.5 rounded-full bg-coffee-gold" />
+          </motion.div>
         </div>
-      </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, x: 24, scale: 0.98 }}
+          animate={{ opacity: 1, x: 0, scale: 1 }}
+          transition={{ duration: 0.7, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
+          className="relative mx-auto w-full max-w-xl lg:mx-0"
+        >
+          <div className="glass relative overflow-hidden rounded-3xl p-4 shadow-card sm:p-5">
+            <div className="mb-4 flex items-center justify-between border-b border-white/10 pb-4">
+              <div>
+                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-white/55">
+                  <BarChart3 className="h-3.5 w-3.5 text-coffee-gold" />
+                  Live market
+                </div>
+                <p className="mt-1 text-xs text-white/30">Benchmark prices · updated now</p>
+              </div>
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-coffee-leaf/20 bg-coffee-leaf/10 px-2.5 py-1 text-[10px] font-semibold text-coffee-leaf">
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-coffee-leaf" /> Open
+              </span>
+            </div>
+
+            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/20">
+              <MarketPulse />
+              <div className="relative divide-y divide-white/[0.08]">
+                {quotes.map((quote) => (
+                  <div key={quote.name} className="flex items-center justify-between px-4 py-4 transition-colors hover:bg-white/[0.035] sm:px-5">
+                    <div>
+                      <p className="font-heading font-semibold text-white">{quote.name}</p>
+                      <p className="mt-1 text-[11px] text-white/35">Benchmark spot</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-heading text-xl font-semibold tracking-tight text-white">{quote.price}</p>
+                      <p className={`mt-1 flex items-center justify-end gap-1 text-xs font-semibold ${quote.up ? "text-coffee-leaf" : "text-red-400"}`}>
+                        {quote.up ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
+                        {quote.change}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-3.5">
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-white/35">Market index</p>
+                <p className="mt-1 font-heading text-xl font-semibold text-white">184.6</p>
+                <p className="mt-1 text-xs font-semibold text-coffee-leaf">+1.7% today</p>
+              </div>
+              <a href="#market" className="group flex items-center justify-between rounded-2xl border border-coffee-gold/15 bg-coffee-gold/[0.07] p-3.5 transition-all hover:border-coffee-gold/25 hover:bg-coffee-gold/[0.10]">
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-coffee-gold/70">Full dashboard</p>
+                  <p className="mt-1 text-sm font-semibold text-white">Explore markets</p>
+                </div>
+                <ChevronRight className="h-4 w-4 text-coffee-gold transition-transform group-hover:translate-x-0.5" />
+              </a>
+            </div>
+          </div>
+        </motion.div>
+      </div>
     </section>
   );
 }

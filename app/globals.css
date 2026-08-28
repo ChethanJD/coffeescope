@@ -3,48 +3,143 @@
 @tailwind utilities;
 
 :root {
-  --font-inter: "Inter", sans-serif;
-  --font-manrope: "Manrope", sans-serif;
+  --background: #f5f1eb;
+  --background-deep: #ebe4db;
+  --foreground: #211a15;
+
+  --surface-1: #ffffff;
+  --surface-2: #f8f5f1;
+  --surface-3: #eee8e0;
+
+  --glass-bg: rgba(255, 255, 255, 0.62);
+  --glass-bg-strong: rgba(255, 255, 255, 0.78);
+  --glass-bg-subtle: rgba(255, 255, 255, 0.48);
+
+  --glass-border: rgba(70, 55, 42, 0.12);
+  --glass-border-strong: rgba(70, 55, 42, 0.18);
+
+  --glass-highlight: rgba(255, 255, 255, 0.8);
+
+  --coffee-amber: #b8732f;
+  --coffee-gold: #c98a45;
+  --coffee-light: #e0a85c;
+
+  --positive: #25834a;
+  --negative: #c74646;
+  --neutral: #756c64;
+
+  --text-primary: #211a15;
+  --text-secondary: #665d55;
+  --text-muted: #8c8279;
+
+  --glass-blur: 20px;
+
+  --shadow-glass:
+    0 18px 50px rgba(62, 43, 27, 0.12);
+
+  --shadow-glass-hover:
+    0 24px 65px rgba(62, 43, 27, 0.18);
 }
 
-/* The interface is dark-first; these targeted overrides preserve contrast for
-   the theme selector without duplicating every component's utility classes. */
-html.light body {
-  background-color: #f7f4ef;
-  color: #1c1917;
-}
-html.light .bg-surface-void {
-  background-color: #f7f4ef;
-}
-html.light .glass {
-  background: rgba(255, 255, 255, 0.78);
-  border-color: rgba(92, 59, 33, 0.15);
-}
-html.light [class*="text-white"] {
-  color: #292524;
-}
-html.light [class*="border-white"] {
-  border-color: rgba(92, 59, 33, 0.14);
-}
-html.light [class*="bg-white/"] {
-  background-color: rgba(92, 59, 33, 0.06);
+/* =========================================================
+   DARK THEME
+   ========================================================= */
+
+.dark {
+  --background: #0b0908;
+  --background-deep: #070605;
+  --foreground: #f5f1eb;
+
+  --surface-1: #100d0b;
+  --surface-2: #171310;
+  --surface-3: #1c1713;
+
+  --glass-bg: rgba(255, 255, 255, 0.055);
+  --glass-bg-strong: rgba(255, 255, 255, 0.075);
+  --glass-bg-subtle: rgba(255, 255, 255, 0.035);
+
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-border-strong: rgba(255, 255, 255, 0.15);
+
+  --glass-highlight: rgba(255, 255, 255, 0.08);
+
+  --coffee-amber: #c98a45;
+  --coffee-gold: #e0a85c;
+  --coffee-light: #f0c78b;
+
+  --positive: #62c58a;
+  --negative: #e07171;
+  --neutral: #a9a19a;
+
+  --text-primary: #f5f1eb;
+  --text-secondary: #a9a19a;
+  --text-muted: #706a65;
+
+  --shadow-glass:
+    0 18px 50px rgba(0, 0, 0, 0.28);
+
+  --shadow-glass-hover:
+    0 24px 65px rgba(0, 0, 0, 0.38);
 }
 
-* {
+/* =========================================================
+   BASE
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
   scroll-behavior: smooth;
-}
-
-html,
-body {
-  background-color: #0b0b0b;
-  color: #ffffff;
+  background: var(--background-deep);
 }
 
 body {
-  font-family: var(--font-manrope);
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+
+  color: var(--text-primary);
+
+  background:
+    radial-gradient(
+      circle at 15% 10%,
+      rgba(201, 138, 69, 0.08),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 85% 25%,
+      rgba(224, 168, 92, 0.045),
+      transparent 25%
+    ),
+    linear-gradient(
+      135deg,
+      var(--background) 0%,
+      var(--surface-1) 48%,
+      var(--background) 100%
+    );
+
+  font-family:
+    Inter,
+    Geist,
+    Manrope,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
 }
+
+/* =========================================================
+   TEXT
+   ========================================================= */
 
 h1,
 h2,
@@ -52,102 +147,276 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-inter);
-  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  letter-spacing: -0.025em;
 }
 
-/* Respect reduced-motion preferences across the whole app */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
-  }
+p {
+  color: var(--text-secondary);
 }
 
-/* Thin, dark scrollbar to match the premium aesthetic */
-::-webkit-scrollbar {
-  width: 10px;
-}
-::-webkit-scrollbar-track {
-  background: #0b0b0b;
-}
-::-webkit-scrollbar-thumb {
-  background: #2a2a2a;
-  border-radius: 999px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #3a3a3a;
+.text-primary {
+  color: var(--text-primary);
 }
 
-/* Reusable glassmorphism surface */
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+/* =========================================================
+   GLASS
+   ========================================================= */
+
 .glass {
-  background: rgba(22, 22, 22, 0.55);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--glass-bg-strong),
+      var(--glass-bg)
+    );
+
+  border: 1px solid var(--glass-border);
+
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+
+  box-shadow:
+    var(--shadow-glass),
+    inset 0 1px 0 var(--glass-highlight);
+
+  border-radius: 1.25rem;
+
+  isolation: isolate;
 }
 
-/* Visible keyboard focus ring, brand-tinted */
-:focus-visible {
-  outline: 2px solid #d6a55c;
-  outline-offset: 3px;
-  border-radius: 4px;
+.glass::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--glass-highlight),
+      transparent 35%
+    );
+
+  opacity: 0.35;
 }
 
-.text-gradient-gold {
-  background: linear-gradient(135deg, #d6a55c 0%, #5c3b21 100%);
+.glass-hover {
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.glass-hover:hover {
+  transform: translateY(-2px);
+
+  border-color: var(--glass-border-strong);
+
+  box-shadow:
+    var(--shadow-glass-hover),
+    inset 0 1px 0 var(--glass-highlight);
+}
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+
+.glass-navbar {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--surface-1) 82%, transparent),
+      color-mix(in srgb, var(--surface-1) 68%, transparent)
+    );
+
+  border-bottom: 1px solid var(--glass-border);
+
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* =========================================================
+   COFFEE ACCENT
+   ========================================================= */
+
+.coffee-gradient {
+  background:
+    linear-gradient(
+      135deg,
+      var(--coffee-amber),
+      var(--coffee-gold)
+    );
+
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-/* Added at runtime after hydration, so every route receives the same
-   restrained entrance motion without hiding content when JavaScript is off. */
-.scroll-reveal {
-  opacity: 0;
-  transform: translateY(28px) scale(0.99);
-  transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1) var(--scroll-delay, 0ms),
-    transform 700ms cubic-bezier(0.16, 1, 0.3, 1) var(--scroll-delay, 0ms);
+.coffee-glow {
+  box-shadow:
+    0 0 0 1px rgba(201, 138, 69, 0.08),
+    0 14px 45px rgba(201, 138, 69, 0.13);
 }
-.scroll-reveal--visible {
-  opacity: 1;
-  transform: translateY(0) scale(1);
+
+/* =========================================================
+   FORMS
+   ========================================================= */
+
+input,
+textarea,
+select {
+  color: var(--text-primary);
+
+  background: var(--glass-bg);
+
+  border: 1px solid var(--glass-border);
+
+  outline: none;
+
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease;
 }
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-muted);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--coffee-gold);
+
+  box-shadow:
+    0 0 0 3px rgba(201, 138, 69, 0.12);
+}
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+:focus-visible {
+  outline: 2px solid var(--coffee-gold);
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+.page-container {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+.section-spacing {
+  padding-block: 5rem;
+}
+
+@media (max-width: 1024px) {
+  .page-container {
+    padding-inline: 1.25rem;
+  }
+
+  .section-spacing {
+    padding-block: 4rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-container {
+    padding-inline: 1rem;
+  }
+
+  .section-spacing {
+    padding-block: 3rem;
+  }
+
+  .glass {
+    border-radius: 1rem;
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .glass-hover:hover {
+    transform: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-container {
+    padding-inline: 0.875rem;
+  }
+
+  .section-spacing {
+    padding-block: 2.5rem;
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
+
+/* =========================================================
+   TABLES / CHARTS
+   ========================================================= */
+
+.table-scroll,
+.data-table-scroll,
+.chart-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-scroll table,
+.data-table-scroll table {
+  min-width: 620px;
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
-  .scroll-reveal { opacity: 1; transform: none; }
-}
+  html {
+    scroll-behavior: auto;
+  }
 
-/* Styled range slider (Profit Calculator) */
-input[type="range"].brand-slider {
-  -webkit-appearance: none;
-  appearance: none;
-  height: 6px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #d6a55c 0%, #d6a55c var(--slider-progress, 50%), rgba(255, 255, 255, 0.08) var(--slider-progress, 50%));
-  outline: none;
-}
-input[type="range"].brand-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: #ffffff;
-  border: 3px solid #d6a55c;
-  cursor: pointer;
-  box-shadow: 0 0 12px rgba(214, 165, 92, 0.5);
-}
-input[type="range"].brand-slider::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: #ffffff;
-  border: 3px solid #d6a55c;
-  cursor: pointer;
-  box-shadow: 0 0 12px rgba(214, 165, 92, 0.5);
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .glass-hover:hover {
+    transform: none;
+  }
 }
