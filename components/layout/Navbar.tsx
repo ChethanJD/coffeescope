@@ -8,7 +8,6 @@ import { Menu, X, Coffee, ChevronDown, LayoutDashboard, ShoppingBag, CloudSun, N
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useScrolled } from "@/hooks/useScrollPosition";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import type { NavItem } from "@/types";
 
 const PRIMARY_NAV: NavItem[] = [
@@ -156,7 +155,7 @@ export function Navbar() {
 
         {/* Login CTA */}
         <div className="hidden items-center gap-1.5 lg:flex">
-          <ThemeToggle />
+
           <Link
             href="/login"
             className="rounded-xl px-3.5 py-2 text-[13px] font-semibold text-white/70 transition-colors hover:bg-white/[0.05] hover:text-white"
