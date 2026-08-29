@@ -1,21 +1,24 @@
 "use client";
 
-import { createContext, useContext, type ReactNode } from "react";
-
-type Theme = "dark";
-type ResolvedTheme = "dark";
+import { createContext, useContext, useEffect, type ReactNode } from "react";
 
 type ThemeContextValue = {
-  theme: Theme;
-  resolvedTheme: ResolvedTheme;
-  setTheme: (theme: Theme) => void;
+  theme: "dark";
+  resolvedTheme: "dark";
+  setTheme: (theme: "dark") => void;
 };
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const setTheme = (_theme: Theme) => {
-    // CoffeeScope is permanently dark mode.
+  useEffect(() => {
+    document.documentElement.classList.remove("light");
+    document.documentElement.classList.add("dark");
+  }, []);
+
+  const setTheme = () => {
+    document.documentElement.classList.remove("light");
+    document.documentElement.classList.add("dark");
   };
 
   return (

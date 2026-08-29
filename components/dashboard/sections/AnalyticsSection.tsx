@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import { PriceTrendChart } from "@/components/analytics/PriceTrendChart";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
-import { Activity, TrendingUp, Bell } from "lucide-react";
 
 const QUICK_STATS = [
   { label: "Portfolio Value", value: 4004750, prefix: "₹", decimals: 0 },
