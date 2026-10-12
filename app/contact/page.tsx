@@ -4,21 +4,31 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Check, Send, Mail } from "lucide-react";
 import { PageShell } from "@/components/layout/PageShell";
+import { TurnstileWidget } from "@/components/shared/TurnstileWidget";
+import { sendContactMessage } from "@/app/contact/actions";
 
 export default function ContactPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [honeypot, setHoneypot] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!name.trim() || !email.trim() || !message.trim()) return;
     setIsSending(true);
-    await new Promise((resolve) => setTimeout(resolve, 900));
+    setError(null);
+    const result = await sendContactMessage({ name, email, message, honeypot, turnstileToken });
     setIsSending(false);
-    setSent(true);
+    if (result.ok) {
+      setSent(true);
+    } else {
+      setError(result.error);
+    }
   }
 
   return (
@@ -56,6 +66,16 @@ export default function ContactPage() {
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
               <input
                 type="text"
+                name="company_website"
+                value={honeypot}
+                onChange={(e) => setHoneypot(e.target.value)}
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                className="absolute left-[-9999px] h-0 w-0 opacity-0"
+              />
+              <input
+                type="text"
                 required
                 placeholder="Your name"
                 value={name}
@@ -73,11 +93,14 @@ export default function ContactPage() {
               <textarea
                 required
                 rows={5}
+                maxLength={5000}
                 placeholder="How can we help?"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 className="w-full resize-none rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2.5 text-sm text-white placeholder:text-white/25 focus:border-coffee-gold focus:outline-none"
               />
+              <TurnstileWidget onVerify={setTurnstileToken} />
+              {error && <p className="text-sm text-red-400">{error}</p>}
               <button
                 type="submit"
                 disabled={isSending}

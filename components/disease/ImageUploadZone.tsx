@@ -4,6 +4,8 @@ import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { UploadCloud, Camera, X } from "lucide-react";
 
+const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024; // 10MB, matches the advertised limit below
+
 export function ImageUploadZone({
   onImageSelected,
   previewUrl,
@@ -16,12 +18,25 @@ export function ImageUploadZone({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [validationError, setValidationError] = useState<string | null>(null);
 
   function handleFiles(files: FileList | null) {
     const file = files?.[0];
-    if (file && file.type.startsWith("image/")) {
-      onImageSelected(file);
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setValidationError("Please upload an image file (JPG or PNG).");
+      return;
     }
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      setValidationError(
+        `That image is ${(file.size / (1024 * 1024)).toFixed(1)}MB — please upload one under 10MB.`
+      );
+      return;
+    }
+
+    setValidationError(null);
+    onImageSelected(file);
   }
 
   if (previewUrl) {
@@ -42,68 +57,71 @@ export function ImageUploadZone({
   }
 
   return (
-    <motion.div
-      onDragOver={(e) => {
-        e.preventDefault();
-        setIsDragging(true);
-      }}
-      onDragLeave={() => setIsDragging(false)}
-      onDrop={(e) => {
-        e.preventDefault();
-        setIsDragging(false);
-        handleFiles(e.dataTransfer.files);
-      }}
-      animate={{
-        borderColor: isDragging ? "#D6A55C" : "rgba(255,255,255,0.12)",
-        backgroundColor: isDragging ? "rgba(214,165,92,0.06)" : "rgba(255,255,255,0.02)",
-      }}
-      className="flex h-72 flex-col items-center justify-center gap-4 rounded-xl3 border-2 border-dashed p-8 text-center"
-    >
-      <span className="flex h-14 w-14 items-center justify-center rounded-full bg-coffee-gold/15">
-        <UploadCloud className="h-6 w-6 text-coffee-gold" />
-      </span>
-      <div>
-        <p className="text-sm font-medium text-white">
-          Drag a leaf or cherry photo here, or choose an option below
-        </p>
-        <p className="mt-1 text-xs text-white/40">Supports JPG, PNG — up to 10MB</p>
-      </div>
+    <div className="flex flex-col gap-2">
+      <motion.div
+        onDragOver={(e) => {
+          e.preventDefault();
+          setIsDragging(true);
+        }}
+        onDragLeave={() => setIsDragging(false)}
+        onDrop={(e) => {
+          e.preventDefault();
+          setIsDragging(false);
+          handleFiles(e.dataTransfer.files);
+        }}
+        animate={{
+          borderColor: isDragging ? "#D6A55C" : "rgba(255,255,255,0.12)",
+          backgroundColor: isDragging ? "rgba(214,165,92,0.06)" : "rgba(255,255,255,0.02)",
+        }}
+        className="flex h-72 flex-col items-center justify-center gap-4 rounded-xl3 border-2 border-dashed p-8 text-center"
+      >
+        <span className="flex h-14 w-14 items-center justify-center rounded-full bg-coffee-gold/15">
+          <UploadCloud className="h-6 w-6 text-coffee-gold" />
+        </span>
+        <div>
+          <p className="text-sm font-medium text-white">
+            Drag a leaf or cherry photo here, or choose an option below
+          </p>
+          <p className="mt-1 text-xs text-white/40">Supports JPG, PNG — up to 10MB</p>
+        </div>
 
-      <div className="flex gap-3">
-        <button
-          type="button"
-          onClick={() => fileInputRef.current?.click()}
-          className="flex items-center gap-2 rounded-full bg-coffee-gradient px-5 py-2.5 text-sm font-semibold text-white shadow-glow-gold"
-        >
-          <UploadCloud className="h-4 w-4" />
-          Upload Photo
-        </button>
-        <button
-          type="button"
-          onClick={() => cameraInputRef.current?.click()}
-          className="flex items-center gap-2 rounded-full bg-white/[0.06] px-5 py-2.5 text-sm font-semibold text-white/80 hover:bg-white/[0.1]"
-        >
-          <Camera className="h-4 w-4" />
-          Use Camera
-        </button>
-      </div>
+        <div className="flex gap-3">
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            className="flex items-center gap-2 rounded-full bg-coffee-gradient px-5 py-2.5 text-sm font-semibold text-white shadow-glow-gold"
+          >
+            <UploadCloud className="h-4 w-4" />
+            Upload Photo
+          </button>
+          <button
+            type="button"
+            onClick={() => cameraInputRef.current?.click()}
+            className="flex items-center gap-2 rounded-full bg-white/[0.06] px-5 py-2.5 text-sm font-semibold text-white/80 hover:bg-white/[0.1]"
+          >
+            <Camera className="h-4 w-4" />
+            Use Camera
+          </button>
+        </div>
 
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*"
-        className="hidden"
-        onChange={(e) => handleFiles(e.target.files)}
-      />
-      {/* capture="environment" opens the rear camera directly on mobile devices */}
-      <input
-        ref={cameraInputRef}
-        type="file"
-        accept="image/*"
-        capture="environment"
-        className="hidden"
-        onChange={(e) => handleFiles(e.target.files)}
-      />
-    </motion.div>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={(e) => handleFiles(e.target.files)}
+        />
+        {/* capture="environment" opens the rear camera directly on mobile devices */}
+        <input
+          ref={cameraInputRef}
+          type="file"
+          accept="image/*"
+          capture="environment"
+          className="hidden"
+          onChange={(e) => handleFiles(e.target.files)}
+        />
+      </motion.div>
+      {validationError && <p className="text-sm text-red-400">{validationError}</p>}
+    </div>
   );
 }

@@ -8,6 +8,7 @@ import { Menu, X, Coffee, ChevronDown, LayoutDashboard, ShoppingBag, CloudSun, N
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useScrolled } from "@/hooks/useScrollPosition";
+import { AuthNavStatus } from "@/components/auth/AuthNavStatus";
 import type { NavItem } from "@/types";
 
 const PRIMARY_NAV: NavItem[] = [
@@ -153,21 +154,9 @@ export function Navbar() {
           </div>
         </nav>
 
-        {/* Login CTA */}
+        {/* Login CTA / signed-in status */}
         <div className="hidden items-center gap-1.5 lg:flex">
-
-          <Link
-            href="/login"
-            className="rounded-xl px-3.5 py-2 text-[13px] font-semibold text-white/70 transition-colors hover:bg-white/[0.05] hover:text-white"
-          >
-            Login
-          </Link>
-          <Link
-            href="/signup"
-            className="rounded-xl bg-coffee-gradient px-4 py-2 text-[13px] font-semibold text-white shadow-glow-gold transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(201,138,69,0.28)] active:translate-y-0"
-          >
-            Get Started
-          </Link>
+          <AuthNavStatus variant="desktop" />
         </div>
 
         {/* Mobile toggle */}
@@ -213,20 +202,7 @@ export function Navbar() {
                 })}
               </div>
               <div className="mt-3 flex flex-col gap-2 border-t border-white/10 pt-4">
-                <Link
-                  href="/login"
-                  onClick={() => setMobileOpen(false)}
-                  className="rounded-full px-4 py-2 text-center text-sm font-semibold text-white/80"
-                >
-                  Login
-                </Link>
-                <Link
-                  href="/signup"
-                  onClick={() => setMobileOpen(false)}
-                  className="rounded-full bg-coffee-gradient px-4 py-2 text-center text-sm font-semibold text-white"
-                >
-                  Get Started
-                </Link>
+                <AuthNavStatus variant="mobile" onNavigate={() => setMobileOpen(false)} />
               </div>
             </nav>
           </motion.div>

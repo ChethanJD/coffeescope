@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { CheckCircle2, AlertTriangle, ShieldAlert, Pill } from "lucide-react";
+import { CheckCircle2, AlertTriangle, ShieldAlert, Pill, HelpCircle } from "lucide-react";
 import { ConfidenceGauge } from "@/components/prediction/ConfidenceGauge";
 import { cn } from "@/lib/utils";
 import type { DiagnosisResult as DiagnosisResultType } from "@/lib/diseaseDetection/mockAnalyze";
@@ -12,7 +12,33 @@ const SEVERITY_META = {
   High: { color: "text-red-400", bg: "bg-red-500/15" },
 };
 
+const DISCLAIMER =
+  "This is an automated estimate, not a professional diagnosis. For valuable crops or " +
+  "uncertain cases, confirm with your local agricultural extension office before taking action.";
+
 export function DiagnosisResult({ result }: { result: DiagnosisResultType }) {
+  if (result.status === "inconclusive") {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="glass flex flex-col items-center gap-3 rounded-xl3 p-7 text-center shadow-card"
+      >
+        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white/[0.06]">
+          <HelpCircle className="h-6 w-6 text-white/50" />
+        </span>
+        <h3 className="font-heading text-lg font-semibold text-white">Unable to identify</h3>
+        <p className="max-w-sm text-sm leading-relaxed text-white/50">
+          The confidence for this sample ({Math.round(result.confidence)}%) is too low for a
+          reliable result. Try a closer, well-lit photo of a single affected leaf or cherry, or
+          consult your local agricultural extension office.
+        </p>
+        <p className="mt-2 max-w-sm text-xs leading-relaxed text-white/30">{DISCLAIMER}</p>
+      </motion.div>
+    );
+  }
+
   const { disease, confidence } = result;
   const isHealthy = disease.id === "healthy";
   const severityMeta = SEVERITY_META[disease.severity];
@@ -78,14 +104,10 @@ export function DiagnosisResult({ result }: { result: DiagnosisResultType }) {
             Recommended Product
           </span>
           <p className="mt-3 text-sm font-medium text-white">{disease.recommendedProduct}</p>
-          {!isHealthy && (
-            <p className="mt-2 text-xs text-white/40">
-              Always follow local agricultural extension guidance and product
-              label instructions before application.
-            </p>
-          )}
         </div>
       </div>
+
+      <p className="mt-5 text-xs leading-relaxed text-white/30">{DISCLAIMER}</p>
     </motion.div>
   );
 }

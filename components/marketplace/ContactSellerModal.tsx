@@ -23,6 +23,9 @@ export function ContactSellerModal({ listing, onClose }: { listing: MarketplaceL
     e.preventDefault();
     if (!email.trim() || !message.trim()) return;
     setIsSending(true);
+    // This is a sample/demo listing (no real seller behind it), so there is
+    // nowhere real to deliver this message — simulate the wait deliberately
+    // rather than silently pretending a real send happened.
     await new Promise((resolve) => setTimeout(resolve, 900));
     setIsSending(false); setSent(true);
   }
@@ -46,8 +49,8 @@ export function ContactSellerModal({ listing, onClose }: { listing: MarketplaceL
         {sent ? (
           <div className="mt-6 flex flex-col items-center gap-3 py-6 text-center">
             <span className="flex h-12 w-12 items-center justify-center rounded-full border border-coffee-leaf/20 bg-coffee-leaf/10"><CheckCircle2 className="h-6 w-6 text-coffee-leaf" /></span>
-            <p className="text-sm font-medium text-white">Message sent</p>
-            <p className="max-w-xs text-xs leading-5 text-white/40">{listing.farmName} typically responds within 1–2 business days.</p>
+            <p className="text-sm font-medium text-white">Message sent (sample listing)</p>
+            <p className="max-w-xs text-xs leading-5 text-white/40">This is a sample listing for demo purposes — no real seller received this message.</p>
             <button type="button" onClick={onClose} className="mt-2 rounded-full border border-white/10 bg-white/[0.05] px-5 py-2.5 text-xs font-semibold text-white/80 transition hover:bg-white/[0.09]">Done</button>
           </div>
         ) : (

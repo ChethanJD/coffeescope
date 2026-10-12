@@ -222,11 +222,6 @@ export function MarketCard({
               </p>
             </div>
           </div>
-
-          <span className="flex items-center gap-1.5 rounded-full bg-white/[0.04] px-2.5 py-1 text-[11px] font-medium text-white/50">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-coffee-leaf" />
-            Live
-          </span>
         </div>
 
         <div className="relative mt-6">

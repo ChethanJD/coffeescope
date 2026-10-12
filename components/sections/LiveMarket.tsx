@@ -1,7 +1,9 @@
 import { MarketCard } from "@/components/market/MarketCard";
-import { MOCK_QUOTES } from "@/lib/data/mockMarket";
+import { getLatestPrices } from "@/services/market";
 
-export function LiveMarket() {
+export async function LiveMarket() {
+  const { quotes } = await getLatestPrices();
+
   return (
     <section id="market" className="relative bg-surface-void px-6 py-24 sm:py-32">
       <div className="mx-auto max-w-6xl">
@@ -19,7 +21,7 @@ export function LiveMarket() {
         </div>
 
         <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2">
-          {MOCK_QUOTES.map((quote, index) => (
+          {quotes.map((quote, index) => (
             <MarketCard key={quote.variety} quote={quote} index={index} />
           ))}
         </div>

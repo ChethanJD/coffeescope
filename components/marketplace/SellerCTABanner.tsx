@@ -1,9 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Sprout, ArrowRight } from "lucide-react";
+import { ListYourCoffeeModal } from "@/components/marketplace/ListYourCoffeeModal";
 
 export function SellerCTABanner() {
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
@@ -28,11 +32,14 @@ export function SellerCTABanner() {
       </div>
       <button
         type="button"
+        onClick={() => setShowModal(true)}
         className="relative flex shrink-0 items-center gap-2 rounded-full bg-coffee-gradient px-6 py-3 text-sm font-semibold text-white shadow-glow-gold transition-transform hover:scale-[1.03]"
       >
         List Your Coffee
         <ArrowRight className="h-4 w-4" />
       </button>
+
+      {showModal && <ListYourCoffeeModal onClose={() => setShowModal(false)} />}
     </motion.div>
   );
 }

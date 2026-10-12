@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Bell, Search } from "lucide-react";
 import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
@@ -12,6 +12,7 @@ import { PredictionsSection } from "@/components/dashboard/sections/PredictionsS
 import { AlertsSection } from "@/components/dashboard/sections/AlertsSection";
 import { DashboardAnalyticsSection } from "@/components/dashboard/sections/AnalyticsSection";
 import { DASHBOARD_USER, NOTIFICATIONS } from "@/lib/data/mockDashboard";
+import { getDashboardProfile, getDashboardNotifications } from "@/app/dashboard/actions";
 
 export type DashboardTabId =
   | "profile"
@@ -32,9 +33,36 @@ const TAB_LABELS: Record<DashboardTabId, string> = {
   analytics: "Analytics",
 };
 
+function initialsOf(name: string) {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  return (parts[0]?.[0] ?? "").concat(parts[1]?.[0] ?? "").toUpperCase() || "?";
+}
+
 export function DashboardShell() {
   const [active, setActive] = useState<DashboardTabId>("profile");
-  const unreadCount = NOTIFICATIONS.filter((n) => !n.read).length;
+  const [firstName, setFirstName] = useState<string | null>(null);
+  const [initials, setInitials] = useState<string | null>(null);
+  const [unreadCount, setUnreadCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    getDashboardProfile().then((profile) => {
+      if (profile) {
+        const displayName = profile.fullName ?? profile.email;
+        setFirstName(displayName.split(" ")[0] ?? displayName);
+        setInitials(initialsOf(displayName));
+      } else {
+        setFirstName(DASHBOARD_USER.name.split(" ")[0] ?? null);
+        setInitials(DASHBOARD_USER.initials);
+      }
+    });
+    getDashboardNotifications().then((result) => {
+      if (result.source === "database") {
+        setUnreadCount(result.notifications.filter((n) => !n.isRead).length);
+      } else {
+        setUnreadCount(NOTIFICATIONS.filter((n) => !n.read).length);
+      }
+    });
+  }, []);
 
   return (
     <div className="min-h-screen bg-surface-void px-3 pb-16 pt-5 sm:px-5 sm:pb-20 sm:pt-7 lg:px-6 lg:pb-24 lg:pt-8">
@@ -44,7 +72,7 @@ export function DashboardShell() {
           <div>
             <p className="text-xs text-white/40">Dashboard</p>
             <h1 className="font-heading text-xl font-semibold text-white sm:text-2xl">
-              Welcome back, {DASHBOARD_USER.name.split(" ")[0]}
+              Welcome back{firstName ? `, ${firstName}` : ""}
             </h1>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
@@ -62,14 +90,14 @@ export function DashboardShell() {
               className="glass relative flex h-11 w-11 items-center justify-center rounded-full"
             >
               <Bell className="h-4 w-4 text-white/70" />
-              {unreadCount > 0 && (
+              {!!unreadCount && unreadCount > 0 && (
                 <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-coffee-gold text-[9px] font-bold text-black">
                   {unreadCount}
                 </span>
               )}
             </button>
             <span className="flex h-11 w-11 items-center justify-center rounded-full bg-coffee-gradient font-heading text-sm font-semibold text-white">
-              {DASHBOARD_USER.initials}
+              {initials ?? ""}
             </span>
           </div>
         </div>

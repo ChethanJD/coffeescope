@@ -8,7 +8,7 @@ import { Loader2 } from "lucide-react";
 import { FormField } from "@/components/auth/FormField";
 import { SocialAuthButtons } from "@/components/auth/SocialAuthButtons";
 import { signupSchema } from "@/lib/validation/authSchemas";
-import { mockSignup } from "@/lib/auth/mockAuth";
+import { signup } from "@/lib/auth/actions";
 
 export function SignupForm() {
   const router = useRouter();
@@ -39,10 +39,17 @@ export function SignupForm() {
     setErrors({});
     setIsSubmitting(true);
     try {
-      await mockSignup(result.data);
-      router.push("/dashboard");
-    } catch {
-      setFormError("Something went wrong. Please try again.");
+      const { user } = await signup(result.data);
+      // If email confirmation is required, Supabase returns a user with no
+      // active session yet — send them to sign in instead of the dashboard.
+      if (user && !user.confirmed_at) {
+        router.push("/login?confirmEmail=1");
+        return;
+      }
+      router.push("/onboarding");
+      router.refresh();
+    } catch (err) {
+      setFormError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
       setIsSubmitting(false);
     }
   }

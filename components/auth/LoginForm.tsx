@@ -8,7 +8,7 @@ import { Loader2 } from "lucide-react";
 import { FormField } from "@/components/auth/FormField";
 import { SocialAuthButtons } from "@/components/auth/SocialAuthButtons";
 import { loginSchema } from "@/lib/validation/authSchemas";
-import { mockLogin } from "@/lib/auth/mockAuth";
+import { login } from "@/lib/auth/actions";
 
 export function LoginForm() {
   const router = useRouter();
@@ -33,10 +33,11 @@ export function LoginForm() {
     setErrors({});
     setIsSubmitting(true);
     try {
-      await mockLogin(result.data);
+      await login(result.data);
       router.push("/dashboard");
-    } catch {
-      setFormError("Something went wrong. Please try again.");
+      router.refresh();
+    } catch (err) {
+      setFormError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
       setIsSubmitting(false);
     }
   }

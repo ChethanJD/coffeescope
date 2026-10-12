@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Coffee, Twitter, Linkedin, Github, ArrowRight, Check } from "lucide-react";
+import { subscribeNewsletter } from "@/lib/actions/newsletter";
 
 const FOOTER_LINKS: { heading: string; links: { label: string; href: string }[] }[] = [
   {
@@ -48,43 +49,67 @@ const FOOTER_LINKS: { heading: string; links: { label: string; href: string }[] 
 
 function NewsletterForm() {
   const [email, setEmail] = useState("");
+  const [honeypot, setHoneypot] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!email.trim()) return;
-    setSubmitted(true);
+    setIsSubmitting(true);
+    setError(null);
+    const result = await subscribeNewsletter(email, honeypot);
+    setIsSubmitting(false);
+    if (result.ok) {
+      setSubmitted(true);
+    } else {
+      setError(result.error);
+    }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-2 sm:flex-row">
-      <input
-        type="email"
-        required
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="you@company.com"
-        disabled={submitted}
-        className="w-full rounded-full border border-white/10 bg-white/[0.03] px-4 py-2.5 text-sm text-white placeholder:text-white/25 focus:border-coffee-gold focus:outline-none disabled:opacity-60 sm:w-56"
-      />
-      <button
-        type="submit"
-        disabled={submitted}
-        className="flex items-center justify-center gap-1.5 rounded-full bg-coffee-gradient px-5 py-2.5 text-sm font-semibold text-white shadow-glow-gold transition-transform hover:scale-[1.02] disabled:opacity-80"
-      >
-        {submitted ? (
-          <>
-            <Check className="h-3.5 w-3.5" />
-            Subscribed
-          </>
-        ) : (
-          <>
-            Subscribe
-            <ArrowRight className="h-3.5 w-3.5" />
-          </>
+    <div className="flex flex-col gap-2">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-2 sm:flex-row">
+        <input
+          type="text"
+          name="company_website"
+          value={honeypot}
+          onChange={(e) => setHoneypot(e.target.value)}
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          className="absolute left-[-9999px] h-0 w-0 opacity-0"
+        />
+        <input
+          type="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="you@company.com"
+          disabled={submitted || isSubmitting}
+          className="w-full rounded-full border border-white/10 bg-white/[0.03] px-4 py-2.5 text-sm text-white placeholder:text-white/25 focus:border-coffee-gold focus:outline-none disabled:opacity-60 sm:w-56"
+        />
+        <button
+          type="submit"
+          disabled={submitted || isSubmitting}
+          className="flex items-center justify-center gap-1.5 rounded-full bg-coffee-gradient px-5 py-2.5 text-sm font-semibold text-white shadow-glow-gold transition-transform hover:scale-[1.02] disabled:opacity-80"
+        >
+          {submitted ? (
+            <>
+              <Check className="h-3.5 w-3.5" />
+              Subscribed
+            </>
+          ) : (
+            <>
+              {isSubmitting ? "Subscribing..." : "Subscribe"}
+              {!isSubmitting && <ArrowRight className="h-3.5 w-3.5" />}
+            </>
         )}
       </button>
-    </form>
+      </form>
+      {error && <p className="text-xs text-red-400">{error}</p>}
+    </div>
   );
 }
 

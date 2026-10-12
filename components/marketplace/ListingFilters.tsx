@@ -10,25 +10,28 @@ const SORT_OPTIONS: { id: SortOption; label: string }[] = [
   { id: "price-desc", label: "Price: High to Low" }, { id: "quantity-desc", label: "Quantity Available" },
 ];
 
-export function ListingFilters({ activeVariety, onVarietyChange, sort, onSortChange }: {
+export function ListingFilters({ activeVariety, onVarietyChange, sort, onSortChange, hideVarietyFilter }: {
   activeVariety: string; onVarietyChange: (v: string) => void; sort: SortOption; onSortChange: (s: SortOption) => void;
+  hideVarietyFilter?: boolean;
 }) {
   return (
     <div className="glass-subtle flex flex-col gap-3 rounded-2xl p-3 sm:flex-row sm:items-center sm:justify-between">
-      <div className="flex flex-wrap gap-1.5">
-        {VARIETIES.map((variety) => (
-          <button key={variety} type="button" onClick={() => onVarietyChange(variety)}
-            aria-pressed={activeVariety === variety}
-            className={cn(
-              "rounded-full border px-3.5 py-2 text-xs font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-coffee-gold/30",
-              activeVariety === variety
-                ? "border-coffee-gold/25 bg-coffee-gradient text-white shadow-glow-gold"
-                : "border-transparent bg-white/[0.04] text-white/50 hover:border-white/10 hover:bg-white/[0.07] hover:text-white/75"
-            )}>
-            {variety}
-          </button>
-        ))}
-      </div>
+      {!hideVarietyFilter && (
+        <div className="flex flex-wrap gap-1.5">
+          {VARIETIES.map((variety) => (
+            <button key={variety} type="button" onClick={() => onVarietyChange(variety)}
+              aria-pressed={activeVariety === variety}
+              className={cn(
+                "rounded-full border px-3.5 py-2 text-xs font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-coffee-gold/30",
+                activeVariety === variety
+                  ? "border-coffee-gold/25 bg-coffee-gradient text-white shadow-glow-gold"
+                  : "border-transparent bg-white/[0.04] text-white/50 hover:border-white/10 hover:bg-white/[0.07] hover:text-white/75"
+              )}>
+              {variety}
+            </button>
+          ))}
+        </div>
+      )}
 
       <label className="relative shrink-0">
         <span className="sr-only">Sort listings</span>

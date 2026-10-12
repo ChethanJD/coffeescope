@@ -6,6 +6,8 @@ import { Loader2, ScanSearch } from "lucide-react";
 import { ImageUploadZone } from "@/components/disease/ImageUploadZone";
 import { DiagnosisResult } from "@/components/disease/DiagnosisResult";
 import { mockAnalyzeImage, type DiagnosisResult as DiagnosisResultType } from "@/lib/diseaseDetection/mockAnalyze";
+import { uploadDiseaseImage } from "@/lib/diseaseDetection/uploadImage";
+import { saveDiseaseResultAction } from "@/app/disease-detection/actions";
 
 export function DiseaseDetection() {
   const [file, setFile] = useState<File | null>(null);
@@ -32,6 +34,17 @@ export function DiseaseDetection() {
     const diagnosis = await mockAnalyzeImage(file);
     setResult(diagnosis);
     setIsAnalyzing(false);
+
+    // Best-effort — a signed-out visitor or unconfigured Supabase simply
+    // means nothing gets saved; the diagnosis above is unaffected either way.
+    if (diagnosis.status === "identified") {
+      const upload = await uploadDiseaseImage(file);
+      saveDiseaseResultAction({
+        diseaseName: diagnosis.disease.name,
+        confidence: diagnosis.confidence,
+        imagePath: upload.ok ? upload.path : undefined,
+      }).catch(() => {});
+    }
   }
 
   return (
@@ -48,6 +61,10 @@ export function DiseaseDetection() {
             Upload a photo of a leaf or cherry and get an instant AI
             diagnosis with treatment guidance — built for the field, not
             the lab.
+          </p>
+          <p className="mx-auto mt-3 max-w-lg rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-xs text-white/40">
+            Demo mode: results are illustrative, not from real image analysis, until a
+            trained vision model is connected.
           </p>
         </div>
 
